@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo", "Photo\Photo.csproj", "{54A56D44-9E30-42A1-93AA-37C35D789747}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo.Core", "Photo.Core\Photo.Core.csproj", "{E36523F1-AB50-409B-89E3-22A54233AA50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo.Azure", "Photo.Azure\Photo.Azure.csproj", "{5BD84E61-A340-4E54-B822-D56D8F60A7F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo.Aws", "Photo.Aws\Photo.Aws.csproj", "{E4C9C375-1315-4620-A993-760F3C7174E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54A56D44-9E30-42A1-93AA-37C35D789747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A56D44-9E30-42A1-93AA-37C35D789747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A56D44-9E30-42A1-93AA-37C35D789747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A56D44-9E30-42A1-93AA-37C35D789747}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E36523F1-AB50-409B-89E3-22A54233AA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E36523F1-AB50-409B-89E3-22A54233AA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E36523F1-AB50-409B-89E3-22A54233AA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E36523F1-AB50-409B-89E3-22A54233AA50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD84E61-A340-4E54-B822-D56D8F60A7F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD84E61-A340-4E54-B822-D56D8F60A7F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD84E61-A340-4E54-B822-D56D8F60A7F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD84E61-A340-4E54-B822-D56D8F60A7F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4C9C375-1315-4620-A993-760F3C7174E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4C9C375-1315-4620-A993-760F3C7174E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4C9C375-1315-4620-A993-760F3C7174E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4C9C375-1315-4620-A993-760F3C7174E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
