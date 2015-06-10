@@ -12,11 +12,17 @@ namespace Photo.Controllers
 {
     public class MemeController : Controller
     {
-        public IMemeRepository MemeRepository { get; set; }
+        private IMemeRepository memeRepository;
+
+        public MemeController(IMemeRepository memeRepository)
+        {
+            this.memeRepository = memeRepository;
+        }
+
         // GET: Meme
         public async Task<ActionResult> Index(Guid id)
         {
-            var completedMeme = await MemeRepository.GetCompletedMemeUri(id);
+            var completedMeme = await memeRepository.GetCompletedMemeUri(id);
 
             return View(completedMeme);
         }
@@ -38,7 +44,7 @@ namespace Photo.Controllers
                        newMeme.Image = reader.ReadBytes(photo.ContentLength);
                     }
 
-                    var pendingId = await MemeRepository.CreateNewMeme(newMeme);
+                    var pendingId = await memeRepository.CreateNewMeme(newMeme);
 
                     return RedirectToAction("Index", pendingId);
                 }
