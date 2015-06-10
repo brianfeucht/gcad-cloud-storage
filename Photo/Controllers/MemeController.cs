@@ -52,7 +52,7 @@ namespace Photo.Controllers
 
                     var pendingId = await memeRepository.CreateNewMeme(newMeme);
 
-                    return RedirectToAction("Index", pendingId);
+                    return RedirectToAction("Index", new { id = pendingId });
                 }
             }
 
