@@ -24,7 +24,13 @@ namespace Photo.Controllers
         {
             var completedMeme = await memeRepository.GetCompletedMemeUri(id);
 
-            return View(completedMeme);
+            if(completedMeme == null)
+            {
+                await Task.Delay(500);
+                return RedirectToAction("Index", new { id = id });
+            }
+
+            return RedirectPermanent(completedMeme.ToString());
         }
 
         // POST: Meme
