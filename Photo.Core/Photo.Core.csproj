@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ICloudFileStorage.cs" />
+    <Compile Include="Interfaces\ICloudQueue.cs" />
     <Compile Include="Interfaces\IMemeRepository.cs" />
     <Compile Include="MemeRepository.cs" />
+    <Compile Include="Models\MemeRequest.cs" />
     <Compile Include="Models\NewMeme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

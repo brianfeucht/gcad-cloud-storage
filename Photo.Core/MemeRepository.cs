@@ -10,21 +10,37 @@ namespace Photo.Core
 {
     public class MemeRepository : IMemeRepository
     {
-        public Task<Guid> CreateNewMeme(NewMeme meme)
+        private readonly ICloudFileStorage fileStorage;
+        private readonly ICloudQueue queue;
+
+        public MemeRepository(ICloudFileStorage fileStorage, ICloudQueue queue)
         {
-            // Upload bytes to storage
-
-            // Send message to processor
-
-            throw new NotImplementedException();
+            this.fileStorage = fileStorage;
+            this.queue = queue;
         }
 
-        public Task<Uri> GetCompletedMemeUri(Guid guid)
+        public async Task<Guid> CreateNewMeme(NewMeme meme)
         {
-            // See if processor has completed processing image
+            var guid = Guid.NewGuid();
 
-            // Return url if so otherwise null
-            throw new NotImplementedException();
+            // Upload bytes to storage
+            await fileStorage.UploadUserSubmittedFile(guid, meme.Image);
+
+            var memeRequest = new MemeRequest()
+            {
+                Id = guid,
+                Text = meme.Text
+            };
+
+            // Send message to processor
+            await queue.EnqueueMessage<MemeRequest>(memeRequest);
+
+            return guid;
+        }
+
+        public async Task<Uri> GetCompletedMemeUri(Guid guid)
+        {
+            return await fileStorage.CompletedFileUrl(guid);
         }
     }
 }
