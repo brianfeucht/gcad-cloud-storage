@@ -33,12 +33,12 @@ namespace Photo.Core
             };
 
             // Send message to processor
-            await queue.EnqueueMessage<MemeRequest>(memeRequest);
+            await queue.EnqueueMessage(memeRequest);
 
             return guid;
         }
 
-        public async Task<Uri> GetCompletedMemeUri(Guid guid)
+        public async Task<string> GetCompletedMemeUri(Guid guid)
         {
             return await fileStorage.CompletedFileUrl(guid);
         }

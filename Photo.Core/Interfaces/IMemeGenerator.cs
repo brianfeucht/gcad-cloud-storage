@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Photo.Core.Interfaces
 {
-    public interface IMemeRepository
+    public interface IMemeGenerator
     {
-        Task<Guid> CreateNewMeme(NewMeme meme);
-        Task<string> GetCompletedMemeUri(Guid guid);
+        Task GenerateMeme(MemeRequest memeRequest);
     }
 }
