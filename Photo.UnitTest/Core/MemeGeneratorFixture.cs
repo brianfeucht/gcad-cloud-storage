@@ -16,11 +16,13 @@ namespace Photo.UnitTest.Core
     {
         private readonly MemeGenerator memeGenerator;
         private readonly Mock<ICloudFileStorage> mockFileStorage;
+        private readonly Mock<ICloudTable> mockTableStore;
 
         public MemeGeneratorFixture()
         {
             mockFileStorage = new Mock<ICloudFileStorage>();
-            memeGenerator = new MemeGenerator(mockFileStorage.Object);
+            mockTableStore = new Mock<ICloudTable>();
+            memeGenerator = new MemeGenerator(mockFileStorage.Object, mockTableStore.Object);
         } 
 
         [Test]
@@ -36,6 +38,7 @@ namespace Photo.UnitTest.Core
             await memeGenerator.GenerateMeme(memeRequest);
 
             mockFileStorage.Verify(m => m.UploadCompletedFile(memeRequest.Id, It.Is<byte[]>(b => b.Length > 0)));
+            mockTableStore.Verify(m => m.Add(It.Is<CompletedMeme>(meme => meme.Id == memeRequest.Id)));
         }
     }
 }

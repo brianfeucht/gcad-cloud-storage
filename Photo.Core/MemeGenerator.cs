@@ -16,15 +16,19 @@ namespace Photo.Core
     public class MemeGenerator : IMemeGenerator
     {
         private readonly ICloudFileStorage fileStorage;
+        private readonly ICloudTable tableStorage;
 
-        public MemeGenerator(ICloudFileStorage fileStorage)
+        public MemeGenerator(ICloudFileStorage fileStorage, ICloudTable tableStorage)
         {
             this.fileStorage = fileStorage;
+            this.tableStorage = tableStorage;
         }
 
         public async Task GenerateMeme(MemeRequest memeRequest)
         {
             var imageBytes = await fileStorage.DownloadUserSubmittedFile(memeRequest.Id);
+
+            string url;
 
             using (var memoryStream = new MemoryStream(imageBytes))
             using (var image = Image.FromStream(memoryStream))
@@ -39,9 +43,19 @@ namespace Photo.Core
                 {
                     image.Save(memorySteam, ImageFormat.Png);
 
-                    await fileStorage.UploadCompletedFile(memeRequest.Id, memorySteam.ToArray());
+                    url = await fileStorage.UploadCompletedFile(memeRequest.Id, memorySteam.ToArray());
                 }
             }
+
+            var completedMeme = new CompletedMeme()
+            {
+                CreatedOn = DateTime.UtcNow,
+                Id = memeRequest.Id,
+                Text = memeRequest.Text,
+                ImageUrl = url
+            };
+
+            await tableStorage.Add(completedMeme);
         }
     }
 }

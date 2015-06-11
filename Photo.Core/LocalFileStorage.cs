@@ -46,13 +46,15 @@ namespace Photo.Core
             return Task.FromResult(File.ReadAllBytes(imageLocalPath));
         }
 
-        public async Task UploadCompletedFile(Guid id, byte[] image)
+        public async Task<string> UploadCompletedFile(Guid id, byte[] image)
         {
             var imageLocalPath = GetCompletedFilePath(id);
             using (var stream = new FileStream(imageLocalPath, FileMode.Create))
             {
                 await stream.WriteAsync(image, 0, image.Length);
             }
+
+            return await CompletedFileUrl(id);
         }
 
         public async Task UploadUserSubmittedFile(Guid guid, byte[] image)

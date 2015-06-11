@@ -5,6 +5,7 @@ using StatePrinter;
 using StatePrinter.ValueConverters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Photo.UnitTest.Core
         [Test]
         public async Task AddGetFind_GoldenPath()
         {
-            var localTable = new LocalTable();
+            var localTable = new LocalTable(Path.GetTempPath());
 
             var expected = new CompletedMeme()
             {

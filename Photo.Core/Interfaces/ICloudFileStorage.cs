@@ -11,6 +11,6 @@ namespace Photo.Core.Interfaces
         Task UploadUserSubmittedFile(Guid guid, byte[] image);
         Task<string> CompletedFileUrl(Guid guid);
         Task<byte[]> DownloadUserSubmittedFile(Guid id);
-        Task UploadCompletedFile(Guid id, byte[] v);
+        Task<string> UploadCompletedFile(Guid id, byte[] v);
     }
 }

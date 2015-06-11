@@ -5,11 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Photo.Core.Models;
+using Raven.Client.Embedded;
+using Raven.Client;
 
 namespace Photo.Core
 {
     public class LocalTable : ICloudTable
     {
+        private EmbeddableDocumentStore documentStore;
+
+        public LocalTable(string localFilePath)
+        {
+            documentStore = new EmbeddableDocumentStore
+            {
+                DataDirectory = localFilePath
+            };
+
+            documentStore.Initialize();
+        }
+
         public async Task<Guid> Add(CompletedMeme value)
         {
             if (value.Id == default(Guid))
@@ -18,19 +32,34 @@ namespace Photo.Core
             if (value.CreatedOn == default(DateTime))
                 value.CreatedOn = DateTime.UtcNow;
 
-            throw new NotImplementedException();
+            using (var session = documentStore.OpenAsyncSession())
+            {
+                await session.StoreAsync(value);
+                await session.SaveChangesAsync();
+            }
 
             return value.Id;
         }
 
-        public Task<CompletedMeme> Get(Guid id)
+        public async Task<CompletedMeme> Get(Guid id)
         {
-            throw new NotImplementedException();
+            using (var session = documentStore.OpenAsyncSession())
+            {
+                return await session.LoadAsync<CompletedMeme>(id);
+            }
         }
 
-        public Task<IEnumerable<CompletedMeme>> Latest(int skip = 0, int limit = 10)
+        public async Task<IEnumerable<CompletedMeme>> Latest(int skip = 0, int limit = 10)
         {
-            throw new NotImplementedException();
+            using (var session = documentStore.OpenAsyncSession())
+            {
+                return await session.Query<CompletedMeme>()
+                    .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
+                    .OrderByDescending(m => m.CreatedOn)
+                    .Skip(skip)
+                    .Take(limit)
+                    .ToListAsync();
+            }
         }
     }
 }
