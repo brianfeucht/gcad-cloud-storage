@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Azure\AzureFileStorageFixture.cs" />
+    <Compile Include="Azure\AzureQueueFixture.cs" />
     <Compile Include="Core\LocalFileStorageFixture.cs" />
     <Compile Include="Core\LocalQueueFixture.cs" />
     <Compile Include="Core\LocalTableFixture.cs" />
