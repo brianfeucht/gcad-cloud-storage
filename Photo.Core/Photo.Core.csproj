@@ -72,12 +72,15 @@
   <ItemGroup>
     <Compile Include="Interfaces\ICloudFileStorage.cs" />
     <Compile Include="Interfaces\ICloudQueue.cs" />
+    <Compile Include="Interfaces\ICloudTable.cs" />
     <Compile Include="Interfaces\IMemeGenerator.cs" />
     <Compile Include="Interfaces\IMemeRepository.cs" />
     <Compile Include="LocalFileStorage.cs" />
     <Compile Include="LocalQueue.cs" />
+    <Compile Include="LocalTable.cs" />
     <Compile Include="MemeGenerator.cs" />
     <Compile Include="MemeRepository.cs" />
+    <Compile Include="Models\CompletedMeme.cs" />
     <Compile Include="Models\MemeRequest.cs" />
     <Compile Include="Models\NewMeme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

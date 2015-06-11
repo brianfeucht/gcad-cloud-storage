@@ -54,6 +54,10 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StatePrinter, Version=2.1.0.0, Culture=neutral, PublicKeyToken=693eec472ad792e3, processorArchitecture=MSIL">
+      <HintPath>..\packages\StatePrinter.2.1.220\lib\net35\StatePrinter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -68,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Core\LocalFileStorageFixture.cs" />
     <Compile Include="Core\LocalQueueFixture.cs" />
+    <Compile Include="Core\LocalTableFixture.cs" />
     <Compile Include="Core\MemeGeneratorFixture.cs" />
     <Compile Include="Core\MemeRepositoryFixture.cs" />
     <Compile Include="PhotoHelper.cs" />

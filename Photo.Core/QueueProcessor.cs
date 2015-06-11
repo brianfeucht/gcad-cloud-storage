@@ -30,7 +30,6 @@ namespace Photo.Core
             await NotifyOfNewMessage();
         }
 
-
         private object startSyncObj = new object();
         public void Start()
         {
