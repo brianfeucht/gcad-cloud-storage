@@ -1,4 +1,5 @@
-﻿using Photo.Core.Interfaces;
+﻿using Nito.AsyncEx;
+using Photo.Core.Interfaces;
 using Photo.Core.Models;
 using System;
 using System.Collections.Concurrent;
@@ -11,26 +12,46 @@ namespace Photo.Core
 {
     public class LocalQueue : ICloudQueue
     {
-        internal readonly ConcurrentQueue<MemeRequest> queue;
-        public event EventHandler NewMessageArrived = delegate { };
+        private readonly ConcurrentQueue<MemeRequest> queue;
+        private readonly AsyncMonitor monitor;
+
+        public int Count
+        {
+            get
+            {
+                return queue.Count;
+            }
+        }
 
         public LocalQueue()
         {
             queue = new ConcurrentQueue<MemeRequest>();
+            monitor = new AsyncMonitor();
         }
 
-        public Task EnqueueMessage(MemeRequest message)
+        public async Task EnqueueMessage(MemeRequest message)
         {
             queue.Enqueue(message);
-            NewMessageArrived.Invoke(this, null);
-            return Task.FromResult(0);
+
+            using (await monitor.EnterAsync())
+            {
+                monitor.PulseAll();
+            }
         }
 
-        public Task<MemeRequest> DequeueMessage()
+        public async Task DequeueMessage(Func<MemeRequest, Task> processRequest)
         {
             MemeRequest request;
-            queue.TryDequeue(out request);
-            return Task.FromResult(request);
+
+            while (!queue.TryDequeue(out request))
+            {
+                using (await monitor.EnterAsync())
+                {
+                    await monitor.WaitAsync();
+                }
+            }
+
+            await processRequest(request);
         }
     }
 }

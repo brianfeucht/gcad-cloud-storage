@@ -9,8 +9,8 @@ namespace Photo.Core.Interfaces
 {
     public interface ICloudQueue
     {
+        int Count { get; }
         Task EnqueueMessage(MemeRequest message);
-        Task<MemeRequest> DequeueMessage();
-        event EventHandler NewMessageArrived;
+        Task DequeueMessage(Func<MemeRequest, Task> processRequest);
     }
 }

@@ -18,19 +18,7 @@ namespace Photo.UnitTest.Core
             var localQueue = new LocalQueue();
             await localQueue.EnqueueMessage(new MemeRequest());
 
-            Assert.AreEqual(1, localQueue.queue.Count);
-        }
-
-        [Test]
-        public async Task Enqueue_NotifiesOfNewMessage()
-        {
-            var wasNotified = false;
-            var localQueue = new LocalQueue();
-            localQueue.NewMessageArrived += (s,e) => { wasNotified = true; };
-
-            await localQueue.EnqueueMessage(new MemeRequest());
-
-            Assert.IsTrue(wasNotified);
+            Assert.AreEqual(1, localQueue.Count);
         }
 
         [Test]
@@ -41,10 +29,11 @@ namespace Photo.UnitTest.Core
             await localQueue.EnqueueMessage(expected);
             await localQueue.EnqueueMessage(new MemeRequest());
 
-            var actual = await localQueue.DequeueMessage();
+            MemeRequest actual = null;
+            await localQueue.DequeueMessage(m => Task.Run(() => actual = m));
 
             Assert.AreEqual(expected, actual);
-            Assert.AreEqual(1, localQueue.queue.Count);
+            Assert.AreEqual(1, localQueue.Count);
         }
     }
 }
