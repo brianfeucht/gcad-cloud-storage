@@ -79,6 +79,7 @@
     <Compile Include="Core\MemeRepositoryFixture.cs" />
     <Compile Include="PhotoHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\UnitTestConnectionStrings.config">

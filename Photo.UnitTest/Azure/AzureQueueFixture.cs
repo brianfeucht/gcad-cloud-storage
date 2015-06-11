@@ -12,38 +12,31 @@ namespace Photo.UnitTest.Azure
     [TestFixture]
     public class AzureQueueFixture
     {
-        [Test]
-        public async Task Enqueue_EnqueuesMessage()
+        private readonly AzureQueue queue;
+
+        public AzureQueueFixture()
         {
-            var queue = new AzureQueue();
-            await queue.EnqueueMessage(new MemeRequest());
-
-            Assert.AreEqual(1, queue.Count);
-        }
-
-        [Test]
-        public async Task Enqueue_NotifiesOfNewMessage()
-        {
-            var wasNotified = false;
-            var queue = new AzureQueue();
-            queue.NewMessageArrived += (s, e) => { wasNotified = true; };
-
-            await queue.EnqueueMessage(new MemeRequest());
-
-            Assert.IsTrue(wasNotified);
+            queue = new AzureQueue("unittest");
         }
 
         [Test]
         public async Task Enqueue_DequeuesMessage()
         {
-            var localQueue = new AzureQueue();
-            var expected = new MemeRequest();
-            await localQueue.EnqueueMessage(expected);
-            await localQueue.EnqueueMessage(new MemeRequest());
+            await queue.EnsureQueueHasBeenCreated();
+            await queue.Clear();
 
-            var actual = await localQueue.DequeueMessage();
+            var expected = new MemeRequest()
+            {
+                Id = Guid.NewGuid()
+            };
 
-            Assert.AreEqual(expected, actual);
+            await queue.EnqueueMessage(expected);
+
+            MemeRequest actual = null;
+            await queue.DequeueMessage(m => Task.Run(() => actual = m));
+
+            var printer = Utilities.CreatePrinter();
+            printer.Assert.PrintEquals(printer.PrintObject(expected), actual);
         }
     }
 }

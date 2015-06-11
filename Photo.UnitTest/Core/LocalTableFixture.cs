@@ -33,22 +33,12 @@ namespace Photo.UnitTest.Core
 
             var actual = await localTable.Get(id);
 
-            var printer = CreatePrinter();
+            var printer = Utilities.CreatePrinter();
             printer.Assert.PrintEquals(printer.PrintObject(expected), actual);
 
             var collection = await localTable.Latest();
 
             Assert.That(collection.Any(m => m.Id == id));
-        }
-
-        public static Stateprinter CreatePrinter()
-        {
-            var printer = new Stateprinter();
-            printer.Configuration
-                .Test.SetAreEqualsMethod(NUnit.Framework.Assert.AreEqual)
-                .Add(new StringConverter(""));
-
-            return printer;
         }
     }
 }
