@@ -8,8 +8,8 @@ namespace Photo.Core.Interfaces
 {
     public interface ICloudFileStorage
     {
-        Task UploadUserSubmittedFile(Guid guid, byte[] image);
-        Task<string> CompletedFileUrl(Guid guid);
+        Task UploadUserSubmittedFile(Guid id, byte[] image);
+        Task<string> CompletedFileUrl(Guid id);
         Task<byte[]> DownloadUserSubmittedFile(Guid id);
         Task<string> UploadCompletedFile(Guid id, byte[] v);
     }

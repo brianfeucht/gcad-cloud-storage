@@ -11,10 +11,17 @@ namespace Photo.UnitTest.Azure
     [TestFixture]
     public class AzureFileStorageFixture
     {
+        private readonly AzureFileStorage fileStorage;
+
+        public AzureFileStorageFixture()
+        {
+            fileStorage = new AzureFileStorage("unittest");
+        }
+
         [Test]
         public async Task CompletedFileUrl_RandomGuidReturnsNull()
         {
-            var fileStorage = new AzureFileStorage();
+            await fileStorage.EnsureContainerIsCreated();
             var url = await fileStorage.CompletedFileUrl(Guid.NewGuid());
             Assert.IsNull(url);
         }
@@ -22,9 +29,9 @@ namespace Photo.UnitTest.Azure
         [Test]
         public async Task DownloadUserSubmittedFile()
         {
-            var id = Guid.NewGuid();
+            await fileStorage.EnsureContainerIsCreated();
 
-            var fileStorage = new AzureFileStorage();
+            var id = Guid.NewGuid();
 
             var expected = PhotoHelper.GetImageData();
             await fileStorage.UploadUserSubmittedFile(id, expected);
@@ -37,9 +44,10 @@ namespace Photo.UnitTest.Azure
         [Test]
         public async Task UploadCompletedFile_ReturnsUrl()
         {
-            var id = Guid.NewGuid();
+            await fileStorage.EnsureContainerIsCreated();
 
-            var fileStorage = new AzureFileStorage();
+            var id = Guid.NewGuid();
+            
             var url = await fileStorage.UploadCompletedFile(id, PhotoHelper.GetImageData());
 
             Assert.IsNotNull(url);
