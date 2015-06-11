@@ -46,6 +46,7 @@ namespace Photo
             builder.Register(c => new LocalFileStorage(HostingEnvironment.MapPath("~/Uploads/"), "/Uploads/")).AsImplementedInterfaces();
             //This needs to be a singleton
             builder.RegisterType<LocalQueue>().AsImplementedInterfaces().SingleInstance();
+            builder.Register(c => new LocalTable(HostingEnvironment.MapPath("~/App_Data/Raven/"))).AsImplementedInterfaces();
         }
     }
 }

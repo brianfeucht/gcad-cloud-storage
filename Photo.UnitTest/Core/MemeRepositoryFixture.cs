@@ -15,14 +15,16 @@ namespace Photo.UnitTest.Core
     public class MemeRepositoryFixture
     {
         private readonly Mock<ICloudFileStorage> mockFileStorage;
-        private Mock<ICloudQueue> mockQueue;
+        private readonly Mock<ICloudQueue> mockQueue;
+        private readonly Mock<ICloudTable> mockTable;
         private readonly MemeRepository repository;
 
         public MemeRepositoryFixture()
         {
             mockFileStorage = new Mock<ICloudFileStorage>();
             mockQueue = new Mock<ICloudQueue>();
-            repository = new MemeRepository(mockFileStorage.Object, mockQueue.Object);
+            mockTable = new Mock<ICloudTable>();
+            repository = new MemeRepository(mockFileStorage.Object, mockQueue.Object, mockTable.Object);
         }
 
         [Test]
@@ -47,6 +49,13 @@ namespace Photo.UnitTest.Core
             await repository.GetCompletedMemeUri(guid);
 
             mockFileStorage.Verify(m => m.CompletedFileUrl(guid));
+        }
+
+        [Test]
+        public async Task GetLatest_GoldenPath()
+        {
+            await repository.LatestCompletedMemes();
+            mockTable.Verify(m => m.Latest(It.IsAny<int>(), It.IsAny<int>()));
         }
     }
 }

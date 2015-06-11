@@ -19,15 +19,31 @@ namespace Photo.Controllers
             this.memeRepository = memeRepository;
         }
 
+        // GET
+        public async Task<ActionResult> Index()
+        {
+            var completedMemes = await memeRepository
+                .LatestCompletedMemes();
+
+            var results = completedMemes.Select(m => new Meme()
+            {
+                Id = m.Id,
+                Text = m.Text,
+                ImageUrl = m.ImageUrl
+            }).ToArray();
+
+            return View(results);
+        }
+
         // GET: Meme
-        public async Task<ActionResult> Index(Guid id)
+        public async Task<ActionResult> Get(Guid id)
         {
             var completedMeme = await memeRepository.GetCompletedMemeUri(id);
 
             if(completedMeme == null)
             {
                 await Task.Delay(500);
-                return RedirectToAction("Index", new { id = id });
+                return RedirectToAction("Get", new { id = id });
             }
 
             return RedirectPermanent(completedMeme.ToString());
@@ -52,7 +68,7 @@ namespace Photo.Controllers
 
                     var pendingId = await memeRepository.CreateNewMeme(newMeme);
 
-                    return RedirectToAction("Index", new { id = pendingId });
+                    return RedirectToAction("Get", new { id = pendingId });
                 }
             }
 

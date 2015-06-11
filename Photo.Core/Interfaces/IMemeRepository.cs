@@ -11,5 +11,6 @@ namespace Photo.Core.Interfaces
     {
         Task<Guid> CreateNewMeme(NewMeme meme);
         Task<string> GetCompletedMemeUri(Guid guid);
+        Task<IEnumerable<CompletedMeme>> LatestCompletedMemes();
     }
 }

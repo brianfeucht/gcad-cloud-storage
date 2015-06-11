@@ -12,16 +12,26 @@ namespace Photo.Core
 {
     public class LocalTable : ICloudTable
     {
-        private EmbeddableDocumentStore documentStore;
+        private static object lockObject = new object();
+        private static EmbeddableDocumentStore documentStore;
 
         public LocalTable(string localFilePath)
         {
-            documentStore = new EmbeddableDocumentStore
+            if(documentStore == null)
             {
-                DataDirectory = localFilePath
-            };
+                lock(lockObject)
+                {
+                    if(documentStore == null)
+                    {
+                        documentStore = new EmbeddableDocumentStore
+                        {
+                            DataDirectory = localFilePath
+                        };
 
-            documentStore.Initialize();
+                        documentStore.Initialize();
+                    }
+                }
+            }
         }
 
         public async Task<Guid> Add(CompletedMeme value)

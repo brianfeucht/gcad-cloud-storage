@@ -15,5 +15,7 @@ namespace Photo.Models
         [StringLength(50)]
         [Display(Name = "Meme Text")]
         public string Text { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

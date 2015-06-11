@@ -1,16 +1,12 @@
-﻿@model Photo.Models.Meme
+﻿@model IEnumerable<Photo.Models.Meme>
 
 <div>
-    <h4>Meme</h4>
+    <h4>Meme (@Model.Count())</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Text)
-        </dd>
-
-    </dl>
+    @foreach (var meme in Model)
+    {
+        <a href="@Url.Action("Get", "Meme", new { id = meme.Id })" title="@meme.Text">
+            <img src="@meme.ImageUrl" alt="@meme.Text" width="300" />
+        </a>
+    }
 </div>

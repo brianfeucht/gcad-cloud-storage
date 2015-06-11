@@ -12,11 +12,13 @@ namespace Photo.Core
     {
         private readonly ICloudFileStorage fileStorage;
         private readonly ICloudQueue queue;
+        private readonly ICloudTable table;
 
-        public MemeRepository(ICloudFileStorage fileStorage, ICloudQueue queue)
+        public MemeRepository(ICloudFileStorage fileStorage, ICloudQueue queue, ICloudTable table)
         {
             this.fileStorage = fileStorage;
             this.queue = queue;
+            this.table = table;
         }
 
         public async Task<Guid> CreateNewMeme(NewMeme meme)
@@ -41,6 +43,11 @@ namespace Photo.Core
         public async Task<string> GetCompletedMemeUri(Guid guid)
         {
             return await fileStorage.CompletedFileUrl(guid);
+        }
+
+        public async Task<IEnumerable<CompletedMeme>> LatestCompletedMemes()
+        {
+            return await table.Latest();
         }
     }
 }

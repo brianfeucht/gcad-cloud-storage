@@ -2,3 +2,8 @@
 /packages
 bin
 obj
+/Photo/App_Data/Raven
+Thumbs.db
+desktop.ini
+/Photo/CompiledIndexCache
+/Photo/Uploads
