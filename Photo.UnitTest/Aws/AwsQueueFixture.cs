@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using Photo.Aws;
 using Photo.Core.Models;
+using StatePrinter;
+using StatePrinter.ValueConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,27 +15,33 @@ namespace Photo.UnitTest.Aws
     public class AwsQueueFixture
     {
         [Test]
-        public async Task Enqueue_EnqueuesMessage()
-        {
-            var localQueue = new AwsQueue();
-            await localQueue.EnqueueMessage(new MemeRequest());
-
-            Assert.AreEqual(1, localQueue.Count);
-        }
-
-        [Test]
         public async Task Enqueue_DequeuesMessage()
         {
-            var localQueue = new AwsQueue();
-            var expected = new MemeRequest();
-            await localQueue.EnqueueMessage(expected);
-            await localQueue.EnqueueMessage(new MemeRequest());
+            var queue = new AwsQueue("gcad-storage-demo");
+            await queue.Clear();
+
+            var expected = new MemeRequest()
+            {
+                Id = Guid.NewGuid()
+            };
+
+            await queue.EnqueueMessage(expected);
 
             MemeRequest actual = null;
-            await localQueue.DequeueMessage(m => Task.Run(() => actual = m));
+            await queue.DequeueMessage(m => Task.Run(() => actual = m));
 
-            Assert.AreEqual(expected, actual);
-            Assert.AreEqual(1, localQueue.Count);
+            var printer = CreatePrinter();
+            printer.Assert.PrintEquals(printer.PrintObject(expected), actual);
+        }
+
+        public static Stateprinter CreatePrinter()
+        {
+            var printer = new Stateprinter();
+            printer.Configuration
+                .Test.SetAreEqualsMethod(NUnit.Framework.Assert.AreEqual)
+                .Add(new StringConverter(""));
+
+            return printer;
         }
     }
 }
