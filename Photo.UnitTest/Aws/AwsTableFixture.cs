@@ -17,7 +17,7 @@ namespace Photo.UnitTest.Aws
         [Test]
         public async Task AddGetFind_GoldenPath()
         {
-            var table = new AwsTable();
+            var table = new AwsTable("gcad-demo");
 
             var expected = new CompletedMeme()
             {
