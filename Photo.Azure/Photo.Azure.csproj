@@ -93,6 +93,7 @@
     <Compile Include="AzureFileStorage.cs" />
     <Compile Include="AzureQueue.cs" />
     <Compile Include="AzureTable.cs" />
+    <Compile Include="CompletedMemeTableEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

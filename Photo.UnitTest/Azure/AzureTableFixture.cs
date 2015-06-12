@@ -15,7 +15,8 @@ namespace Photo.UnitTest.Azure
         [Test]
         public async Task AddGetFind_GoldenPath()
         {
-            var localTable = new AzureTable();
+            var localTable = new AzureTable("unittest");
+            await localTable.EnsureTableHasBeenCreated();
 
             var expected = new CompletedMeme()
             {
