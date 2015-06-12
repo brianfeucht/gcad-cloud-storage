@@ -34,7 +34,7 @@ namespace Photo.Azure
                                     ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
 
                 var queueClient = storageAccount.CreateCloudQueueClient();
-                return queueClient.GetQueueReference("myqueue");
+                return queueClient.GetQueueReference(queueName);
             }
         }
 
@@ -51,6 +51,13 @@ namespace Photo.Azure
         public async Task DequeueMessage(Func<MemeRequest, Task> processRequest)
         {
             var message = await Queue.GetMessageAsync();
+
+            if (message == null)
+            {
+                await Task.Delay(2000);
+                return;
+            }
+
             var request = JsonConvert.DeserializeObject<MemeRequest>(message.AsString);
 
             await processRequest(request);

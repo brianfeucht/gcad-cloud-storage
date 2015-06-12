@@ -80,6 +80,9 @@ namespace Photo.Azure
 
             await reference.UploadFromByteArrayAsync(imageBytes, 0, imageBytes.Length);
 
+            reference.Properties.ContentType = "image/png";
+            await reference.SetPropertiesAsync();
+
             return reference.Uri.ToString();
         }
 

@@ -1,6 +1,7 @@
 ﻿using Nito.AsyncEx;
 using Photo.Core.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +41,14 @@ namespace Photo.Core
         {
             while (running)
             {
-                await queue.DequeueMessage(memeRequest => generator.GenerateMeme(memeRequest));
+                try
+                {
+                    await queue.DequeueMessage(memeRequest => generator.GenerateMeme(memeRequest));
+                }
+                catch(Exception ex)
+                {
+                    Trace.Write(ex);
+                }
             }
         }
 
