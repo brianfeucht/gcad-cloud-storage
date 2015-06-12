@@ -12,26 +12,32 @@ using System.Threading.Tasks;
 namespace Photo.UnitTest.Aws
 {
     [TestFixture]
-    public class AwsQueueFixture
+    public class AwsTableFixture
     {
         [Test]
-        public async Task Enqueue_DequeuesMessage()
+        public async Task AddGetFind_GoldenPath()
         {
-            var queue = new AwsQueue("gcad-storage-demo");
-            await queue.Clear();
+            var table = new AwsTable();
 
-            var expected = new MemeRequest()
+            var expected = new CompletedMeme()
             {
-                Id = Guid.NewGuid()
+                CreatedOn = DateTime.UtcNow,
+                Text = "UnitTest",
+                ImageUrl = "http://test.test/test.png"
             };
 
-            await queue.EnqueueMessage(expected);
+            var id = await table.Add(expected);
 
-            MemeRequest actual = null;
-            await queue.DequeueMessage(m => Task.Run(() => actual = m));
+            expected.Id = id;
+
+            var actual = await table.Get(id);
 
             var printer = CreatePrinter();
             printer.Assert.PrintEquals(printer.PrintObject(expected), actual);
+
+            var collection = await table.Latest();
+
+            Assert.That(collection.Any(m => m.Id == id));
         }
 
         //TODO: Refactor to Utilities class post merge.

@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Aws\AwsFileStorageFixture.cs" />
     <Compile Include="Aws\AwsQueueFixture.cs" />
+    <Compile Include="Aws\AwsTableFixture.cs" />
     <Compile Include="Core\LocalFileStorageFixture.cs" />
     <Compile Include="Core\LocalQueueFixture.cs" />
     <Compile Include="Core\LocalTableFixture.cs" />

@@ -64,6 +64,7 @@
     <Compile Include="AwsCredentialFactory.cs" />
     <Compile Include="AwsFileStorage.cs" />
     <Compile Include="AwsQueue.cs" />
+    <Compile Include="AwsTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
