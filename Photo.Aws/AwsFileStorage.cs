@@ -45,8 +45,8 @@ namespace Photo.Aws
 
                 throw;
             }
-            
-            return "https://s3.amazonaws.com/" + BucketName + "/" + completed;
+
+            return "https://s3-us-west-2.amazonaws.com/" + BucketName + "/" + completed;
         }
 
         public async Task<byte[]> DownloadUserSubmittedFile(Guid id)
@@ -77,8 +77,8 @@ namespace Photo.Aws
                     InputStream = memoryStream
                 });
             }
-
-            return "https://s3.amazonaws.com/" + BucketName + "/" + completed;
+            
+            return "https://s3-us-west-2.amazonaws.com/" + BucketName + "/" + completed;
         }
 
         public async Task UploadUserSubmittedFile(Guid guid, byte[] image)

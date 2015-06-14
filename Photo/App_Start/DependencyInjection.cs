@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Photo.Aws;
 using Photo.Core;
 using Photo.Core.Interfaces;
 using System;
@@ -24,7 +25,8 @@ namespace Photo
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             BuildCommonDependencies(builder);
-            LocalVersionDependencies(builder);
+            //LocalVersionDependencies(builder);
+            AwsVersionDependencies(builder);
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
@@ -47,6 +49,13 @@ namespace Photo
             //This needs to be a singleton
             builder.RegisterType<LocalQueue>().AsImplementedInterfaces().SingleInstance();
             builder.Register(c => new LocalTable(HostingEnvironment.MapPath("~/App_Data/Raven/"))).AsImplementedInterfaces();
+        }
+
+        private static void AwsVersionDependencies(ContainerBuilder builder)
+        {
+            builder.Register(c => new AwsTable("gcad-demo")).AsImplementedInterfaces();
+            builder.Register(c => new AwsFileStorage()).AsImplementedInterfaces();
+            builder.Register(c => new AwsQueue("gcad-storage-demo")).AsImplementedInterfaces();
         }
     }
 }

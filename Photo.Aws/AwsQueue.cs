@@ -41,6 +41,9 @@ namespace Photo.Aws
                  MaxNumberOfMessages = 1
             });
 
+            if (response == null || response.Messages.Count == 0)
+                return;
+
             var message = response.Messages.FirstOrDefault();
             var result = JsonConvert.DeserializeObject<MemeRequest>(message.Body);
 

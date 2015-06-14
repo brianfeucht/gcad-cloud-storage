@@ -40,7 +40,14 @@ namespace Photo.Core
         {
             while (running)
             {
-                await queue.DequeueMessage(memeRequest => generator.GenerateMeme(memeRequest));
+                try
+                {
+                    await queue.DequeueMessage(memeRequest => generator.GenerateMeme(memeRequest));
+                }
+                catch(Exception ex)
+                {
+
+                }
             }
         }
 
